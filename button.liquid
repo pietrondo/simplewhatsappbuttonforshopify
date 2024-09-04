@@ -1,0 +1,67 @@
+//XXXXXXX the number of whatsapp
+ {% assign whatsappNumber = "XXXXXXX" %}
+{% assign message = "" | url_encode %}
+{% assign buttonPosition = "right" %}
+{% assign buttonColor = "#25d366" %}
+{% assign closeButtonColor = "black" %}
+{% assign ctaText = "WhatsApp us" %}
+{% assign marginBottom = "1.25em" %}
+{% assign marginLeft = "1.25em" %}
+{% assign marginRight = "1.25em" %}
+{% assign cornerRadius = "2.5em" %}
+{% assign zIndex = "999999" %}
+{% assign showCloseButton = true %}
+{% if buttonPosition == "left" %}
+  {% assign positionStyle = "left: 0;" %}
+{% else %}
+  {% assign positionStyle = "right: 0;" %}
+{% endif %}
+<style>
+  #whatsapp-button {
+    position: fixed;
+    bottom: {{ marginBottom }};
+    {{ positionStyle }}
+    {% if buttonPosition == "left" %}
+      margin-left: {{ marginLeft }};
+    {% else %}
+      margin-right: {{ marginRight }};
+    {% endif %}
+    background-color: {{ buttonColor }};
+    color: white;
+    border-radius: {{ cornerRadius }};
+    padding: 10px 20px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: {{ zIndex }};
+  }
+  #close-button {
+    color: {{ closeButtonColor }};
+    float: right;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+</style>
+<a id="whatsapp-button" href="#" onclick="openWhatsApp(); return false;">
+  {% if showCloseButton %}
+    <span id="close-button" onclick="event.stopPropagation(); this.parentElement.style.display='none';">×</span>
+  {% endif %}
+  {{ ctaText }}
+</a>
+<script>
+  function openWhatsApp() {
+    var phoneNumber = "{{ whatsappNumber }}";
+    var message = "{{ message }}";
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Per dispositivi mobili, usa l'URI schema di WhatsApp
+      window.location.href = "whatsapp://send?phone=" + phoneNumber + "&text=" + message;
+    } else {
+      // Per desktop, usa il link web
+      window.open("https://web.whatsapp.com/send?phone=" + phoneNumber + "&text=" + message, "_blank");
+    }
+  }
+</script>
